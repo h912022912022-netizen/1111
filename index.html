@@ -502,6 +502,7 @@
     </div>
 
     <div class="ml-auto">
+        <button class="btn xs primary" onclick="window.open('https://drive.google.com/drive/folders/1I9ZnwT_45vhoZlvHQTco1E19-ZkcbJfy?usp=drive_link', '_blank')">DATABASE</button>
         <button class="btn xs" onclick="exportData()">↓ EXPORT</button>
         <button class="btn xs" onclick="document.getElementById('import-file').click()">↑ IMPORT</button>
         <input type="file" id="import-file" style="display:none" accept=".json" onchange="importData(event)">
@@ -615,24 +616,12 @@ function deleteProfile() {
     }
 }
 
-// ==========================================
-// MODIFIED EXPORT FUNCTION
-// ==========================================
 function exportData() {
-    // 1. 產生 JSON 檔案並觸發瀏覽器下載
     const blob = new Blob([JSON.stringify(dbData, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = `gear_data_${Date.now()}.json`;
     a.click();
-
-    // 2. 顯示提示訊息
-    showToast('檔案已下載！正在開啟 Google 雲端硬碟...');
-
-    // 3. 另開新分頁前往指定的 Google Drive 資料夾
-    setTimeout(() => {
-        window.open('https://drive.google.com/drive/folders/1I9ZnwT_45vhoZlvHQTco1E19-ZkcbJfy?usp=drive_link', '_blank');
-    }, 800); 
 }
 
 function importData(e) {
