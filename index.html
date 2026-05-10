@@ -397,7 +397,7 @@ async function exportData() {
         const res = await fetch(DRIVE_UPLOAD_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain' },
-            body: jsonStr
+            body: JSON.stringify({ filename: filename, data: dbData })
         });
         const result = await res.json();
         if (result.success) {
