@@ -374,8 +374,15 @@ function deleteProfile() { if (Object.keys(dbData).length <= 1) { showToast('Can
 // EXPORT：本地存檔 + 背景上傳到 Google Drive
 // ==========================================
 async function exportData() {
+    const userInput = prompt('請輸入檔案名稱：');
+    if (userInput === null || userInput.trim() === '') { showToast('已取消匯出'); return; }
+
+    const now = new Date();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const filename = `${userInput.trim()}.Date${month}${day}.json`;
+
     const jsonStr = JSON.stringify(dbData, null, 2);
-    const filename = `gear_data_${Date.now()}.json`;
 
     // 1. 存到本地電腦
     const blob = new Blob([jsonStr], { type: 'application/json' });
