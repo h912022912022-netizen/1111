@@ -421,7 +421,26 @@ async function exportData() {
     }
 }
 
-function importData(e) { const file = e.target.files[0]; if (!file) return; const r = new FileReader(); r.onload = ev => { try { const imported = JSON.parse(ev.target.result); if (imported.gears) { dbData = imported.gears; currentProfileName = imported.profileName || '—'; } else { dbData = imported; } saveData(); showToast('Import successful!'); } catch { showToast('Invalid JSON file'); } }; r.readAsText(file); e.target.value = ''; }
+function importData(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    // 從檔名取得 profile 名稱：去掉 .DateMMDD.json 或直接去掉 .json
+    const rawName = file.name.replace(/\.json$/i, '');          // 去掉 .json
+    const cleanName = rawName.replace(/\.Date\d{4}$/i, '');     // 去掉 .Date0511
+    const r = new FileReader();
+    r.onload = ev => {
+        try {
+            const imported = JSON.parse(ev.target.result);
+            if (imported.gears) { dbData = imported.gears; }
+            else { dbData = imported; }
+            currentProfileName = cleanName;
+            saveData();
+            showToast('Import successful!');
+        } catch { showToast('Invalid JSON file'); }
+    };
+    r.readAsText(file);
+    e.target.value = '';
+}
 
 // ==========================================
 // UI SLIDERS
